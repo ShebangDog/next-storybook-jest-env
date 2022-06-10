@@ -9,6 +9,8 @@ type ImageStoryObject = ComponentStoryObj<typeof Image>
 
 export const Primary: ImageStoryObject = {
   args: {
-    src: "https://picsum.photos/200/300"
+    src: "https://picsum.photos/200/300",
+    alt: "random-image",
+    width: "200px"
   }
 }
