@@ -1,10 +1,11 @@
 import { Flavor } from "../../common/types/flavor"
+import { Source } from "../../common/types/attributes"
 
 export type User = {
   id: Id
   age: Age
   name: Name
-  profile: Profile
+  profile: Profile & Source
 }
 
 type Id = Flavor<string, "user-id">
