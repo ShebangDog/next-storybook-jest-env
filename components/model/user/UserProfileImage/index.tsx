@@ -1,4 +1,4 @@
-import { User } from "../../../../models/user"
+import { User } from "../../../../models/User"
 import { Image, ImageAttributes } from "../../../ui/Image"
 import styled from "styled-components"
 import { Circle } from "../../../ui/Image/variants"
