@@ -1,5 +1,5 @@
 import { UserProfileImage, UserProfileImageProps } from "../UserProfileImage"
-import { User } from "../../../models/User"
+import { User } from "../../../../models/User"
 import styled from "styled-components"
 
 type UserProfileProps = User

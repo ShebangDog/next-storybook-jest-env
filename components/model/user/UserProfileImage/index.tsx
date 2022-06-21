@@ -1,7 +1,7 @@
-import { User } from "../../../models/User"
-import { Image, ImageAttributes } from "../../ui/Image"
+import { User } from "../../../../models/User"
+import { Image, ImageAttributes } from "../../../ui/Image"
 import styled from "styled-components"
-import { Circle } from "../../ui/Image/variants"
+import { Circle } from "../../../ui/Image/variants"
 
 type UserProfileShapeProps = Omit<Circle, "kind">
 type UserProfileAttributeProps = Omit<ImageAttributes, "src"> & {
