@@ -1,4 +1,4 @@
-const models = ["user", "vote"]
+const { models } = require("./module/models")
 
 module.exports = [
   {
