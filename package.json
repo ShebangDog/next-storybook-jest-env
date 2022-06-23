@@ -13,7 +13,11 @@
     "start": "next start",
     "lint": "next lint",
     "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook"
+    "build-storybook": "build-storybook",
+    "gen:ui": "hygen new ui",
+    "gen:page": "hygen new page",
+    "gen:model": "hygen new model",
+    "gen:functional": "hygen new functional"
   },
   "dependencies": {
     "@testing-library/react": "^13.3.0",
