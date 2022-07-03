@@ -1,5 +1,5 @@
 ---
-to: './components/model/<%= componentName %>/index.stories.tsx'
+to: './components/model/<%= modelName %>/<%= componentName %>/index.stories.tsx'
 ---
 
 import { ComponentMeta, ComponentStoryObj } from "@storybook/react"

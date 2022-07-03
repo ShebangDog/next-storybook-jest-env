@@ -8,7 +8,7 @@ type <%= componentName %>Props = {
 
 }
 
-export const <%= componentName %>: FC<\ <%= componentName %>Props> = (props) => {
+export const <%= componentName %>: FC<<%= componentName %>Props> = (props) => {
 
 
 }
