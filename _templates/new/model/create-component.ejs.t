@@ -1,5 +1,5 @@
 ---
-to: './components/model/<%= modelName %>/<%= componentName %>/index.ts'
+to: './components/model/<%= modelName %>/<%= componentName %>/index.tsx'
 ---
 
 import { FC } from "react"

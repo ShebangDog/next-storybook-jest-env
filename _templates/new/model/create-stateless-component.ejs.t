@@ -1,5 +1,5 @@
 ---
-to: "<%= hasStatelessComponent ? `./components/model/${modelName}/${componentName}/index.stateless.ts` : null %>"
+to: "<%= hasStatelessComponent ? `./components/model/${modelName}/${componentName}/index.stateless.tsx` : null %>"
 ---
 
 import { FC } from "react"
