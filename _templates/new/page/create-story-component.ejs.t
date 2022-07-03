@@ -3,12 +3,12 @@ to: './components/page/<%= componentName %>/index.stories.tsx'
 ---
 
 import { ComponentMeta, ComponentStoryObj } from "@storybook/react"
-import { <%= componentName %> } from "./index"
+import { Stateless<%= componentName %> } from "./index.stateless"
 
-type ComponentType = typeof <%= componentName %>
+type ComponentType = typeof Stateless<%= componentName %>
 type <%= componentName %>StoryObject = ComponentStoryObj<ComponentType>
 const componentMeta: ComponentMeta<ComponentType> = {
-  component: <%= componentName %>,
+  component: Stateless<%= componentName %>,
   args: {
     // default arguments
   }
