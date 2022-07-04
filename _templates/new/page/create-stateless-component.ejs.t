@@ -4,12 +4,11 @@ to: ./components/model/${modelName}/${componentName}/index.stateless.tsx
 
 import { FC } from "react"
 
-type <%= componentName %>StatelessProps = {
+type Stateless<%= componentName %>Props = {
 
 }
 
-export const Stateless<%= componentName %>: FC<<%= componentName %>StatelessProps> = (props) => {
+export const Stateless<%= componentName %>: FC<Stateless<%= componentName %>Props> = (props) => {
     const {} = props
-
 
 }
