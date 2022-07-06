@@ -17,7 +17,8 @@
     "gen:ui": "hygen new ui",
     "gen:page": "hygen new page",
     "gen:model": "hygen new model",
-    "gen:functional": "hygen new functional"
+    "gen:functional": "hygen new functional",
+    "ls": "jq -r '.scripts|to_entries[]|((.key))' package.json"
   },
   "dependencies": {
     "@testing-library/react": "^13.3.0",
