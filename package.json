@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "test:vrt": "run-all -s capture compare",
+    "compare-no-story": "run-s storybook capture",
     "compare": "reg-cli __screenshots__/actual __screenshots__/expected __screenshots__/diff -R ./report.html",
     "capture": "storycap --outDir __screenshots__/actual http://localhost:6006",
     "update-expected": "run-s update-expected:reg-cli",
