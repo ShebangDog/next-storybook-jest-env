@@ -16,6 +16,13 @@ jobs:
       - name: echo hello world
         run: |
           echo hello world
+      - name: notify begin
+        run: |
+          echo begin switching to working branch
+      - uses: actions/checkout@v3
+      - name: notify end
+        run: |
+          echo end switching to working branch
       - name: echo filename
         run: |
           cat package.json
