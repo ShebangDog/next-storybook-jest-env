@@ -1,0 +1,1 @@
+export type ExtractPartOf<Union, Part extends Union> = Part

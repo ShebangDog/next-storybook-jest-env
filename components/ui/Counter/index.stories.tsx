@@ -1,6 +1,5 @@
 import { ComponentMeta, ComponentStoryObj } from "@storybook/react"
 import { Counter } from "./index"
-import { useCount } from "../../../hooks/useCount"
 import { within } from "@testing-library/dom"
 import { userEvent } from "@storybook/testing-library"
 
@@ -14,11 +13,6 @@ const componentMeta: ComponentMeta<ComponentType> = {
 }
 
 export const Primary: CounterStoryObject = {
-  render: (args) => {
-    const {count, countUp} = useCount(args.value)
-
-    return (<Counter value={count} onClick={countUp}/>)
-  }
 }
 
 export const CountUpTwice: CounterStoryObject = {
