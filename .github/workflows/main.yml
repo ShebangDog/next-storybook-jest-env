@@ -26,6 +26,12 @@ jobs:
       - name: echo filename
         run: |
           cat package.json
+      - name: Comment PR
+        uses: thollander/actions-comment-pull-request@v1
+        with:
+          message: |
+            Hello world ! :wave:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   resolve-dependency:
     runs-on: ubuntu-22.04
