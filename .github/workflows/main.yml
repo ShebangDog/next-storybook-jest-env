@@ -1,5 +1,4 @@
 name: run-vrt
-
 on:
   push:
     branches:
@@ -10,46 +9,70 @@ on:
 
   workflow_dispatch:
 jobs:
+  artifact-test-upload:
+    name: uploading artifact test
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v3
+      - run: mkdir .reg
+      - name: make text .reg/file
+        run: | 
+          cat << EOF > .reg/file 
+          hello
+          EOF
+      - name: artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: my-artifact
+          path: .reg
+
+  artifact-test-download:
+    needs: artifact-test-upload
+    name: downloading artifact test
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v3
+      - name: check files
+        run: ls
+      - uses: actions/download-artifact@v3
+        with:
+          name: my-artifact
+          path: .reg
+      - name: Display structure of downloaded files
+        run: |
+          cat .reg/file
+
   prepare:
     name: Prepare main branch screenshots
     runs-on: ubuntu-latest
     steps:
+      - name: checkout main branch
+        uses: actions/checkout@v3
+        with:
+          ref: develop
+          fetch-depth: 0
       - name: setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 16
+          cache: 'yarn'
+          cache-dependency-path: |
+            **/yarn.lock
+            yarn.lock
+      - name: yarn install
+        run: yarn install --frozen-install
 
-      - name: checkout main branch
-        uses: actions/checkout@v3
+      - name: download-artifact
+        uses: actions/download-artifact@v3
         with:
-          ref: main
-          fetch-depth: 0
-
-      - name: check commit hash
-        id: commithash
-        run: echo "::set-output name=hash::$(git rev-parse HEAD)"
-
-      - name: restore yarn cache
-        uses: actions/cache@v2
-        with:
-          path: .yarn/cache/
-          key: reg-yarn-${{ hashFiles('**/yarn.lock') }}-v1
-
-      - name: restore reg-suit screenshots
-        uses: actions/cache@v2
-        with:
-          path: .reg/
-          key: reg-${{ steps.commithash.outputs.hash }}-v7
+          name: my-artifact
+          path: .reg
 
       - name: Check file existence
         id: check_files
         uses: andstor/file-existence-action@v1
         with:
           files: ".reg/"
-
-      - name: yanr install main branch
-        if: steps.check_files.outputs.files_exists == 'false'
-        run: yarn install
 
       - name: screenshots main branch
         if: steps.check_files.outputs.files_exists == 'false'
@@ -66,11 +89,49 @@ jobs:
           mv -f .reg/actual/ .reg/expected/
           mkdir .reg/actual/
           ls -l .reg/
+
       - name: upload .reg/
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: reg-expected
           path: .reg/
+
+  run-reg-suit:
+    name: run-reg
+    needs: prepare
+    runs-on: ubuntu-22.04
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: workaround for detached HEAD
+        if: ${{ github.event_name == 'pull_request' }}
+        run: |
+          git checkout ${GITHUB_HEAD_REF#refs/heads/} || git checkout -b ${GITHUB_HEAD_REF#refs/heads/} && git pull
+
+      - name: yarn install
+        run: yarn install --frozen-install
+
+      - name: load reg-suit expecteds
+        uses: actions/download-artifact@v3
+        with:
+          name: reg-expected
+          path: .reg/
+
+      - name: screenshots
+        run: yarn screenshot
+
+      - name: run reg-suit
+        run: yarn run reg-suit run
+
+      - name: upload reg-suit
+        uses: actions/upload-artifact@v3
+        with:
+          name: visual regression test result
+          path: .reg/
+
   resolve-dependency:
     runs-on: ubuntu-22.04
     steps:
@@ -82,7 +143,7 @@ jobs:
           node-version: 16
           cache: 'yarn'
       - name: yarn install
-        run: yarn install
+        run: yarn install --frozen-install
       - name: screenshot
         run: yarn screenshot
       - name: workaround for detached HEAD
