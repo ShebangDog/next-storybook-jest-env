@@ -9,6 +9,7 @@
     "capture": "storycap --outDir __screenshots__/actual http://localhost:6006",
     "update-expected": "run-s update-expected:reg-cli",
     "update-expected:reg-cli": "reg-cli __screenshots__/actual __screenshots__/expected __screenshots__/diff  -U",
+    "storycap": "storycap --serverCmd \"start-storybook -p 9001\" http://localhost:9001",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
