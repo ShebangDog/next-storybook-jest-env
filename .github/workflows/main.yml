@@ -14,6 +14,11 @@ jobs:
     name: Prepare main branch screenshots
     runs-on: ubuntu-latest
     steps:
+      - name: checkout main branch
+        uses: actions/checkout@v3
+        with:
+          ref: develop
+          fetch-depth: 0
       - name: setup Node.js
         uses: actions/setup-node@v3
         with:
@@ -22,13 +27,6 @@ jobs:
           cache-dependency-path: |
             **/yarn.lock
             yarn.lock
-
-      - name: checkout main branch
-        uses: actions/checkout@v3
-        with:
-          ref: develop
-          fetch-depth: 0
-
       - name: check commit hash
         id: commithas
         run: echo "::set-output name=hash::$(git rev-parse HEAD)"
