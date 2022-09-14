@@ -19,6 +19,8 @@ jobs:
           hello world
           gg
           EOF
+      - uses:
+          actions/checkout@v3
       - run: ls
       - name: Post comments
         env:
