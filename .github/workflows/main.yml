@@ -19,9 +19,6 @@ jobs:
           node-version: 16
       - name: checkout main branch
         uses: actions/checkout@v3
-        with:
-          ref: main
-          fetch-depth: 0
       - name: yarn install
         run: yarn install
       - name: ls
