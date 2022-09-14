@@ -14,6 +14,7 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v3
+      - run: mkdir .reg
       - name: make text .reg/file
         run: | 
           cat << EOF > .reg/file 
