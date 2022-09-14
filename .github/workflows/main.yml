@@ -10,24 +10,6 @@ on:
 
   workflow_dispatch:
 jobs:
-  hello-world:
-    runs-on: ubuntu-22.04
-    steps:
-      - name: echo hello world
-        run: |
-          cat << EOF > comments
-          ![screen-shot](${URL}/__screenshots__/expected/components/ui/Button/Primary:png?raw=true)
-          EOF
-        env:
-          URL: ${{ github.event.pull_request.html_url }}
-      - run: ls
-      - name: Post comments
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          URL: ${{ github.event.pull_request.html_url }}
-        run:
-          gh pr comment -F ./comments "${URL}"
-
   resolve-dependency:
     runs-on: ubuntu-22.04
     steps:
