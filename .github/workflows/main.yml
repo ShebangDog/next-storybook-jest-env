@@ -27,15 +27,11 @@ jobs:
           cache-dependency-path: |
             **/yarn.lock
             yarn.lock
+      - name: yarn install
+        run: yarn install --frozen-install
       - name: check commit hash
         id: commithas
         run: echo "::set-output name=hash::$(git rev-parse HEAD)"
-
-      - name: restore yarn cache
-        uses: actions/cache@v2
-        with:
-          path: .yarn/cache/
-          key: reg-yarn-${{ hashFiles('**/yarn.lock') }}-v1
 
       - name: restore reg-suit screenshots
         uses: actions/cache@v2
@@ -48,10 +44,6 @@ jobs:
         uses: andstor/file-existence-action@v1
         with:
           files: ".reg/"
-
-      - name: yanr install main branch
-        if: steps.check_files.outputs.files_exists == 'false'
-        run: yarn install
 
       - name: screenshots main branch
         if: steps.check_files.outputs.files_exists == 'false'
