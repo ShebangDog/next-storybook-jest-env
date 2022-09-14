@@ -26,7 +26,7 @@ jobs:
           fetch-depth: 0
 
       - name: check commit hash
-        id: commithash
+        id: commithas
         run: echo "::set-output name=hash::$(git rev-parse HEAD)"
 
       - name: restore yarn cache
