@@ -1,8 +1,11 @@
 {
   "plugins": {
     "reg-notify-github-plugin": {
-      "clientId": "MzUwNDU1NLQ00M9LrSjRLS7JL6pMys/P1s1KLS7RTc0r0zcyM7MwMDQ31Q/OSE1KzEt3yU8HAA==",
-
+      "clientId": "MzUwNDU1NLQ00M9LrSjRLS7JL6pMys/P1s1KLS7RTc0r0zcyM7MwMDQ31Q/OSE1KzEt3yU8HAA=="
     }
+  },
+  "core": {
+    "actualDir": "./__screenshots__/actual",
+    "workingDir":"./__screenshots__/expected,"
   }
 }
