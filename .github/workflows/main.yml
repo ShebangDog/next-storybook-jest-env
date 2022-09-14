@@ -42,5 +42,7 @@ jobs:
           fetch-depth: 0
       - name: yarn install
         run: yarn install
+      - name: ls
+        run: ls
       - name: screenshot
         run: yarn screenshot
