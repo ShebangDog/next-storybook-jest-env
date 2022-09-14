@@ -1,5 +1,4 @@
 name: run-vrt
-
 on:
   push:
     branches:
@@ -10,6 +9,34 @@ on:
 
   workflow_dispatch:
 jobs:
+  artifact-test-upload:
+    name: uploading artifact test
+    runs-on: ubuntu-22.04
+    steps:
+      - name: make text file
+        run: | 
+          cat << EOF > file 
+          hello
+          EOF
+      - name: artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: my-artifact
+          path: .reg
+
+  artifact-test-download:
+    name: downloading artifact test
+    runs-on: ubuntu-22.04
+    steps:
+      - name: check files
+        run: ls
+      - uses: actions/download-artifact@v3
+        with:
+          name: my-artifact
+      - name: Display structure of downloaded files
+        run: |
+          cat .reg/file
+
   prepare:
     name: Prepare main branch screenshots
     runs-on: ubuntu-latest
