@@ -24,4 +24,4 @@ jobs:
       - name: screenshot
         run: yarn screenshot
       - name: report
-        run: "reg-suit run"
+        run: yarn run reg-suit run
