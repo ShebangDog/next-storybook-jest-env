@@ -29,12 +29,6 @@ jobs:
       - name: yarn install
         run: yarn install --frozen-install
 
-      - name: download-artifact
-        uses: actions/download-artifact@v3
-        with:
-          name: my-artifact
-          path: .reg
-
       - name: Check file existence
         id: check_files
         uses: andstor/file-existence-action@v1
@@ -81,7 +75,7 @@ jobs:
       - name: yarn install
         run: yarn install --frozen-install
 
-      - name: load reg-suit expecteds
+      - name: load reg-suit expected
         uses: actions/download-artifact@v3
         with:
           name: reg-expected
