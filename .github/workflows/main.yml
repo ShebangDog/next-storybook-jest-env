@@ -13,13 +13,13 @@ jobs:
   resolve-dependency:
     runs-on: ubuntu-22.04
     steps:
+      - name: checkout main branch
+        uses: actions/checkout@v3
       - name: setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 16
           cache: 'yarn'
-      - name: checkout main branch
-        uses: actions/checkout@v3
       - name: yarn install
         run: yarn install
       - name: screenshot
