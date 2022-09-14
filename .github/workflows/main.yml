@@ -22,7 +22,7 @@ jobs:
       - name: checkout main branch
         uses: actions/checkout@v3
         with:
-          ref: main
+          ref: develop
           fetch-depth: 0
 
       - name: check commit hash
