@@ -49,15 +49,15 @@ jobs:
 
       - name: yanr install main branch
         if: steps.check_files.outputs.files_exists == 'false'
-        run: yarn install --immutable
+        run: yarn install
 
       - name: screenshots main branch
         if: steps.check_files.outputs.files_exists == 'false'
-        run: yarn ci:screenshot
+        run: yarn screenshot
 
       - name: run reg-suit main branch
         if: steps.check_files.outputs.files_exists == 'false'
-        run: yarn ci:reg-suit
+        run: yarn run reg-suit run
 
       - name: set reg-suit expected
         if: steps.check_files.outputs.files_exists == 'false'
