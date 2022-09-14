@@ -64,11 +64,11 @@ jobs:
         id: commithas
         run: echo "::set-output name=hash::$(git rev-parse HEAD)"
 
-      - name: restore reg-suit screenshots
-        uses: actions/cache@v2
+      - name: download-artifact
+        uses: actions/download-artifact@v3
         with:
-          path: .reg/
-          key: reg-${{ steps.commithash.outputs.hash }}-v7
+          name: my-artifact
+          path: .reg
 
       - name: Check file existence
         id: check_files
@@ -92,7 +92,7 @@ jobs:
           mkdir .reg/actual/
           ls -l .reg/
       - name: upload .reg/
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: reg-expected
           path: .reg/
