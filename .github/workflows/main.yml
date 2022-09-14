@@ -15,23 +15,16 @@ jobs:
     steps:
       - name: echo hello world
         run: |
-          echo hello world
-      - name: notify begin
-        run: |
-          echo begin switching to working branch
-      - uses: actions/checkout@v3
-      - name: notify end
-        run: |
-          echo end switching to working branch
-      - name: echo filename
-        run: |
-          cat package.json
-      - name: Comment PR
-        uses: thollander/actions-comment-pull-request@v1
-        with:
-          message: |
-            Hello world ! :wave:
+          cat << EOF > comments
+          hello world
+          gg
+          EOF
+      - name: Post comments
+        env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          URL: ${{ github.event.pull_request.html_url }}
+        run:
+          gh pr comment -F ./comments "${URL}"
 
   resolve-dependency:
     runs-on: ubuntu-22.04
