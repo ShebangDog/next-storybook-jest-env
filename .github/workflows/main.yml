@@ -36,7 +36,7 @@ jobs:
       - uses: actions/download-artifact@v3
         with:
           name: my-artifact
-          path: .reg/file
+          path: .reg
       - name: Display structure of downloaded files
         run: |
           cat .reg/file
