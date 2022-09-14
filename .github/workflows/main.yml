@@ -13,6 +13,7 @@ jobs:
     name: uploading artifact test
     runs-on: ubuntu-22.04
     steps:
+      - uses: actions/checkout@v3
       - name: make text .reg/file
         run: | 
           cat << EOF > file 
@@ -28,6 +29,7 @@ jobs:
     name: downloading artifact test
     runs-on: ubuntu-22.04
     steps:
+      - uses: actions/checkout@v3
       - name: check files
         run: ls
       - uses: actions/download-artifact@v3
