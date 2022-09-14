@@ -13,7 +13,7 @@ jobs:
     name: uploading artifact test
     runs-on: ubuntu-22.04
     steps:
-      - name: make text file
+      - name: make text .reg/file
         run: | 
           cat << EOF > file 
           hello
@@ -35,7 +35,7 @@ jobs:
           name: my-artifact
       - name: Display structure of downloaded files
         run: |
-          cat file
+          cat .reg/file
 
   prepare:
     name: Prepare main branch screenshots
