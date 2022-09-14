@@ -16,7 +16,7 @@ jobs:
       - name: echo hello world
         run: |
           cat << EOF > comments
-          [screen-shot](${URL}/__screenshots__/expected/components/ui/Button/Primary:png?raw=true)
+          ![screen-shot](${URL}/__screenshots__/expected/components/ui/Button/Primary:png?raw=true)
           EOF
         env:
           URL: ${{ github.event.pull_request.html_url }}
@@ -26,7 +26,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           URL: ${{ github.event.pull_request.html_url }}
         run:
-          gh pr comment -F .comments "${URL}"
+          gh pr comment -F ./comments "${URL}"
 
   resolve-dependency:
     runs-on: ubuntu-22.04
