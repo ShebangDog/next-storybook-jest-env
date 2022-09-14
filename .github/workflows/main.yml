@@ -27,6 +27,7 @@ jobs:
           path: .reg
 
   artifact-test-download:
+    needs: artifact-test-upload
     name: downloading artifact test
     runs-on: ubuntu-22.04
     steps:
@@ -60,9 +61,6 @@ jobs:
             yarn.lock
       - name: yarn install
         run: yarn install --frozen-install
-      - name: check commit hash
-        id: commithas
-        run: echo "::set-output name=hash::$(git rev-parse HEAD)"
 
       - name: download-artifact
         uses: actions/download-artifact@v3
@@ -91,11 +89,49 @@ jobs:
           mv -f .reg/actual/ .reg/expected/
           mkdir .reg/actual/
           ls -l .reg/
+
       - name: upload .reg/
         uses: actions/upload-artifact@v3
         with:
           name: reg-expected
           path: .reg/
+
+  run-reg-suit:
+    name: run-reg
+    needs: prepare
+    runs-on: ubuntu-22.04
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: workaround for detached HEAD
+        if: ${{ github.event_name == 'pull_request' }}
+        run: |
+          git checkout ${GITHUB_HEAD_REF#refs/heads/} || git checkout -b ${GITHUB_HEAD_REF#refs/heads/} && git pull
+
+      - name: yarn install
+        run: yarn install --frozen-install
+
+      - name: load reg-suit expecteds
+        uses: actions/download-artifact@v3
+        with:
+          name: reg-expected
+          path: .reg/
+
+      - name: screenshots
+        run: yarn screenshot
+
+      - name: run reg-suit
+        run: yarn run reg-suit run
+
+      - name: upload reg-suit
+        uses: actions/upload-artifact@v3
+        with:
+          name: visual regression test result
+          path: .reg/
+
   resolve-dependency:
     runs-on: ubuntu-22.04
     steps:
@@ -107,7 +143,7 @@ jobs:
           node-version: 16
           cache: 'yarn'
       - name: yarn install
-        run: yarn install
+        run: yarn install --frozen-install
       - name: screenshot
         run: yarn screenshot
       - name: workaround for detached HEAD
