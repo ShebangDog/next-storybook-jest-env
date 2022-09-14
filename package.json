@@ -15,6 +15,7 @@
     "lint": "next lint",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
+    "screenshot": "storycap -C puppeteer --serverCmd \"start-storybook -p 6006\" http://localhost:6006 --serverTimeout 60000",
     "gen:ui": "hygen new ui",
     "gen:page": "hygen new page",
     "gen:model": "hygen new model",
