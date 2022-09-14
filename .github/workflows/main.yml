@@ -35,7 +35,7 @@ jobs:
           name: my-artifact
       - name: Display structure of downloaded files
         run: |
-          cat .reg/file
+          cat file
 
   prepare:
     name: Prepare main branch screenshots
