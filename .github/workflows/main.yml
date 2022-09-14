@@ -19,6 +19,7 @@ jobs:
           hello world
           gg
           EOF
+      - run: ls
       - name: Post comments
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
