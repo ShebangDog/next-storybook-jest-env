@@ -33,6 +33,15 @@ jobs:
     runs-on: ubuntu-latest
     needs: prepare
     steps:
+      - name: setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          cache: 'yarn'
+          cache-dependency-path: |
+            **/yarn.lock
+            yarn.lock
+
       - name: checkout main branch
         uses: actions/checkout@v3
 
