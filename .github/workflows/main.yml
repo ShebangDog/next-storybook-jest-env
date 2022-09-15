@@ -32,6 +32,9 @@ jobs:
     name: compare images
     runs-on: ubuntu-latest
     steps:
+      - name: checkout main branch
+        uses: actions/checkout@v3
+
       - name: screenshots
         run: yarn screenshot
 
