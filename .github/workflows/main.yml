@@ -15,9 +15,7 @@ jobs:
     steps:
       - name: checkout main branch
         uses: actions/checkout@v3
-        with:
-          ref: develop
-          fetch-depth: 0
+
       - name: setup Node.js
         uses: actions/setup-node@v3
         with:
@@ -26,69 +24,20 @@ jobs:
           cache-dependency-path: |
             **/yarn.lock
             yarn.lock
+
       - name: yarn install
         run: yarn install --frozen-install
 
-      - name: Check file existence
-        id: check_files
-        uses: andstor/file-existence-action@v1
-        with:
-          files: ".reg/"
-
-      - name: screenshots main branch
-        if: steps.check_files.outputs.files_exists == 'false'
-        run: yarn screenshot
-
-      - name: run reg-suit main branch
-        if: steps.check_files.outputs.files_exists == 'false'
-        run: yarn run reg-suit run
-
-      - name: set reg-suit expected
-        if: steps.check_files.outputs.files_exists == 'false'
-        run: |
-          rm -rf .reg/expected/
-          mv -f .reg/actual/ .reg/expected/
-          mkdir .reg/actual/
-          ls -l .reg/
-
-      - name: upload .reg/
-        uses: actions/upload-artifact@v3
-        with:
-          name: reg-expected
-          path: .reg/
-
-  run-reg-suit:
-    name: run-reg
-    needs: prepare
-    runs-on: ubuntu-22.04
+  run-vrt:
+    name: compare images
+    runs-on: ubuntu-latest
     steps:
-      - name: checkout
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-
-      - name: workaround for detached HEAD
-        if: ${{ github.event_name == 'pull_request' }}
-        run: |
-          git checkout ${GITHUB_HEAD_REF#refs/heads/} || git checkout -b ${GITHUB_HEAD_REF#refs/heads/} && git pull
-
-      - name: yarn install
-        run: yarn install --frozen-install
-
-      - name: load reg-suit expected
-        uses: actions/download-artifact@v3
-        with:
-          name: reg-expected
-          path: .reg/
-
       - name: screenshots
         run: yarn screenshot
 
-      - name: run reg-suit
-        run: yarn run reg-suit run
+      - name: make screenshots .reg/actual
+        run: |
+          mv __screenshots__/actual .reg
 
-      - name: upload reg-suit
-        uses: actions/upload-artifact@v3
-        with:
-          name: visual regression test result
-          path: .reg/
+      - name: check file
+        run: ls
