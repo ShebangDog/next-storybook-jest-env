@@ -75,3 +75,16 @@ jobs:
       - name: out
         run: |
           cat .reg/reg.json
+
+      - name: make comment
+        run: |
+          cat .reg/reg.json >> comments
+
+      - name: send pr comment if report.html changed
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          URL: ${{ github.event.pull_request.html_url }}
+        run:
+          git diff --name-only --exit-code .report.html &&
+          gh pr comment -F ./comments "${URL}"
+          
