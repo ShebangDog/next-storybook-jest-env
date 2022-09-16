@@ -51,6 +51,12 @@ jobs:
       - name: screenshots
         run: yarn screenshot
 
+      - name: make .reg dirs
+        run: |
+          mkdir .reg &&
+          mkdir .reg/actual &&
+          mkdir .reg/expected
+
       - name: make screenshots .reg/actual
         run: |
           mv __screenshots__/actual .reg
