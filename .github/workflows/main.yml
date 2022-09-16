@@ -61,3 +61,7 @@ jobs:
       - name: compare
         run: |
           yarn compare
+
+      - name: out
+        run: |
+          cat .reg.json
