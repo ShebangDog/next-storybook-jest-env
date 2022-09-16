@@ -89,9 +89,11 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           URL: ${{ github.event.pull_request.html_url }}
         run: |
-          git diff --name-only --exit-code ./report.html &&
-          git add ./report.html &&
-          git commit -m 'feat: change report.html' &&
-          git push &&
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git diff --name-only --exit-code ./report.html
+          git add ./report.html
+          git commit -m 'feat: change report.html'
+          git push
           gh pr comment -F ./comments "${URL}"
 
