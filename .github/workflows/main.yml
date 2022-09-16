@@ -64,4 +64,4 @@ jobs:
 
       - name: out
         run: |
-          cat .reg.json
+          cat .reg/reg.json
