@@ -57,3 +57,7 @@ jobs:
 
       - name: check file
         run: ls
+
+      - name: compare
+        run: |
+          yarn compare
