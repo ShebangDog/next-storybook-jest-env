@@ -78,7 +78,7 @@ jobs:
 
       - name: make comment
         run: |
-          cat .reg/reg.json >> comments
+          node script.js .reg/reg.json | cat >> comments
 
       - name: send pr comment if report.html changed
         env:
