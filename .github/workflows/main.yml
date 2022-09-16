@@ -78,7 +78,7 @@ jobs:
 
       - name: make comment
         run: |
-          node script.js .reg/reg.json | cat > comments
+          node script.js ./.reg/reg.json | cat > comments
 
       - name: check file
         run: |
