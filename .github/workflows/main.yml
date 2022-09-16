@@ -45,6 +45,9 @@ jobs:
             **/yarn.lock
             yarn.lock
 
+      - name: yarn install
+        run: yarn install --frozen-install
+
       - name: screenshots
         run: yarn screenshot
 
