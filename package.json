@@ -5,7 +5,7 @@
   "scripts": {
     "test:vrt": "run-all -s capture compare",
     "compare-no-story": "storycap --serverCmd \"start-storybook -p 6001\" http://localhost:6001",
-    "compare": "reg-cli __screenshots__/actual .reg/expected .reg/diff -R ./report.html -J .reg/reg.json -U",
+    "compare": "reg-cli .reg/actual .reg/expected .reg/diff -R ./report.html -J .reg/reg.json -U",
     "capture": "storycap --outDir __screenshots__/actual http://localhost:6006",
     "update-expected": "run-s update-expected:reg-cli",
     "update-expected:reg-cli": "reg-cli __screenshots__/actual __screenshots__/expected __screenshots__/diff  -U",
