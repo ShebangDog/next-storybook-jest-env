@@ -73,6 +73,7 @@ jobs:
           path: |
             .reg/expected/**/*.png
             .reg/actual/**/*.png
+            .reg/diff/**/*.png
             ./report.html
 
       - name: check file
