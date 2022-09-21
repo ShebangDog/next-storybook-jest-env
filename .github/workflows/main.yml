@@ -55,9 +55,10 @@ jobs:
 
       - name: make .reg dirs
         run: |
-          mkdir .reg &&
-          mkdir .reg/actual &&
+          mkdir .reg
+          mkdir .reg/actual
           mkdir .reg/expected
+          mkdir .reg/diff
 
       - name: make screenshots .reg/actual
         run: |
