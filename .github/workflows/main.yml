@@ -9,48 +9,13 @@ on:
 
   workflow_dispatch:
 jobs:
-  artifact-test-upload:
-    name: uploading artifact test
-    runs-on: ubuntu-22.04
-    steps:
-      - uses: actions/checkout@v3
-      - run: mkdir .reg
-      - name: make text .reg/file
-        run: | 
-          cat << EOF > .reg/file 
-          hello
-          EOF
-      - name: artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: my-artifact
-          path: .reg
-
-  artifact-test-download:
-    needs: artifact-test-upload
-    name: downloading artifact test
-    runs-on: ubuntu-22.04
-    steps:
-      - uses: actions/checkout@v3
-      - name: check files
-        run: ls
-      - uses: actions/download-artifact@v3
-        with:
-          name: my-artifact
-          path: .reg
-      - name: Display structure of downloaded files
-        run: |
-          cat .reg/file
-
   prepare:
     name: Prepare main branch screenshots
     runs-on: ubuntu-latest
     steps:
       - name: checkout main branch
         uses: actions/checkout@v3
-        with:
-          ref: develop
-          fetch-depth: 0
+
       - name: setup Node.js
         uses: actions/setup-node@v3
         with:
@@ -59,75 +24,82 @@ jobs:
           cache-dependency-path: |
             **/yarn.lock
             yarn.lock
+
       - name: yarn install
         run: yarn install --frozen-install
 
-      - name: download-artifact
-        uses: actions/download-artifact@v3
-        with:
-          name: my-artifact
-          path: .reg
-
-      - name: Check file existence
-        id: check_files
-        uses: andstor/file-existence-action@v1
-        with:
-          files: ".reg/"
-
-      - name: screenshots main branch
-        if: steps.check_files.outputs.files_exists == 'false'
-        run: yarn screenshot
-
-      - name: run reg-suit main branch
-        if: steps.check_files.outputs.files_exists == 'false'
-        run: yarn run reg-suit run
-
-      - name: set reg-suit expected
-        if: steps.check_files.outputs.files_exists == 'false'
-        run: |
-          rm -rf .reg/expected/
-          mv -f .reg/actual/ .reg/expected/
-          mkdir .reg/actual/
-          ls -l .reg/
-
-      - name: upload .reg/
-        uses: actions/upload-artifact@v3
-        with:
-          name: reg-expected
-          path: .reg/
-
-  run-reg-suit:
-    name: run-reg
+  run-vrt:
+    name: compare images
+    runs-on: ubuntu-latest
     needs: prepare
-    runs-on: ubuntu-22.04
     steps:
-      - name: checkout
+      - name: checkout main branch
         uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
 
-      - name: workaround for detached HEAD
-        if: ${{ github.event_name == 'pull_request' }}
-        run: |
-          git checkout ${GITHUB_HEAD_REF#refs/heads/} || git checkout -b ${GITHUB_HEAD_REF#refs/heads/} && git pull
+      - name: setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          cache: 'yarn'
+          cache-dependency-path: |
+            **/yarn.lock
+            yarn.lock
 
       - name: yarn install
         run: yarn install --frozen-install
-
-      - name: load reg-suit expecteds
-        uses: actions/download-artifact@v3
-        with:
-          name: reg-expected
-          path: .reg/
 
       - name: screenshots
         run: yarn screenshot
 
-      - name: run reg-suit
-        run: yarn run reg-suit run
+      - name: make .reg dirs
+        run: |
+          mkdir .reg
+          mkdir .reg/actual
+          mkdir .reg/expected
+          mkdir .reg/diff
 
-      - name: upload reg-suit
-        uses: actions/upload-artifact@v3
+      - name: make screenshots .reg/actual
+        run: |
+          mv __screenshots__/actual .reg
+
+      - name: make screenshots .reg/expected
+        run: |
+          mv __screenshots__/expected .reg
+
+      - name: check file
+        run: ls
+
+      - name: compare
+        run: |
+          yarn compare
+
+      - uses: actions/upload-artifact@v3
         with:
-          name: visual regression test result
-          path: .reg/
+          name: test-result
+          path: |
+            .reg/expected/**/*.png
+            .reg/actual/**/*.png
+            .reg/diff/**/*.png
+            ./report.html
+
+      - name: out
+        run: |
+          cat .reg/reg.json
+
+      - name: make comment
+        run: |
+          node script.js ./.reg/reg.json | cat > comments
+
+      - name: check file
+        run: |
+          cat comments
+
+      - name: send pr comment if report.html changed
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          URL: ${{ github.event.pull_request.html_url }}
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          gh pr comment -F ./comments "${URL}"
+
