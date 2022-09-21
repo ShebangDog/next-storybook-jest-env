@@ -71,8 +71,8 @@ jobs:
         with:
           name: test-result
           path: |
-            .reg/expected/*
-            .reg/actual/*
+            .reg/expected/**/*.png
+            .reg/actual/**/*.png
             ./report.html
 
       - name: check file
