@@ -68,6 +68,13 @@ jobs:
         run: |
           mv __screenshots__/expected .reg
 
+      - name: check file
+        run: ls
+
+      - name: compare
+        run: |
+          yarn compare
+
       - uses: actions/upload-artifact@v3
         with:
           name: test-result
@@ -76,13 +83,6 @@ jobs:
             .reg/actual/**/*.png
             .reg/diff/**/*.png
             ./report.html
-
-      - name: check file
-        run: ls
-
-      - name: compare
-        run: |
-          yarn compare
 
       - name: out
         run: |
