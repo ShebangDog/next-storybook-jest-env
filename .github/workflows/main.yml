@@ -67,6 +67,14 @@ jobs:
         run: |
           mv __screenshots__/expected .reg
 
+      - uses: actions/upload-artifact@v3
+        with:
+          name: test-result
+          path: |
+            .reg/expected/
+            .reg/actual/
+            ./report.html
+
       - name: check file
         run: ls
 
